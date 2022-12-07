@@ -40,19 +40,20 @@ class Game:
         player = "x"
         i=0
         boardObj.printBoard()
-        # self.getSavedMoves()
+        self.getSavedMoves()
         while(True):
+            print(f"{player} turn")
             if player == "x":
                 promptMsg = "{}({}) Please Enter Your Move: ".format(self.player1Name, player)
-                moveStr = self.validateMoveInput(promptMsg)
-                # moveStr = self.moves[i]
+                # moveStr = self.validateMoveInput(promptMsg)
+                moveStr = self.moves[i]
                 positions = moveStr.split(",")
                 player = boardObj.movePC(player, positions[0].split("-"), positions[1].split("-"))
                 boardObj.printBoard()
             else:
                 promptMsg = "{}({}) Please Enter Your Move: ".format(self.player2Name, player)
-                moveStr = self.validateMoveInput(promptMsg)
-                # moveStr = self.moves[i]
+                # moveStr = self.validateMoveInput(promptMsg)
+                moveStr = self.moves[i]
                 positions = moveStr.split(",")
                 player = boardObj.movePC(player, positions[0].split("-"), positions[1].split("-"))
                 boardObj.printBoard()
@@ -64,9 +65,9 @@ class Game:
                     print("{} won the game!".format(self.player2Name))
                 break
             
-            # i += 1
-            # if i > len(self.moves)-1:
-            #     break
+            i += 1
+            if i > len(self.moves)-1:
+                break
 
     def fileHeader(self):
         pass

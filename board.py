@@ -1,4 +1,5 @@
 import piece as p
+import square as s
 
 class Board:
     def __init__(self):
@@ -26,7 +27,10 @@ class Board:
                     self.activePieces.append(p1PieceObj) #Adding object in activePieces list
                     self.board[row][col] = p1PieceObj    #Storing player 1 in board
                 elif (row + col) % 2 != 0 and row < 6:   #This formula sets the initial empty black positions
-                    self.board[row][col] = "B"
+                    sqObj = s.Square()                   #Creating square object which doesn't contain any pieces
+                    sqObj.setLoc(self.rows[row], col)
+                    sqObj.setType('B')
+                    self.board[row][col] = sqObj
                 elif (row + col) % 2 != 0 and row > 5:   #This formula sets the player2 pieces in place
                     p2PieceObj = p.Piece()               #Creating piece object for player 2
                     p2PieceObj.setLoc(self.rows[row], col)
@@ -34,7 +38,10 @@ class Board:
                     self.activePieces.append(p2PieceObj) #Adding object in activePieces list
                     self.board[row][col] = p2PieceObj    #Storing player 2 in board
                 else:
-                    self.board[row][col] = "R"           #Else the position in board is identified as Red
+                    sqObj = s.Square()
+                    sqObj.setLoc(self.rows[row], col)
+                    sqObj.setType('R')
+                    self.board[row][col] = sqObj        #Else the position in board is identified as Red
 
     
     def renderBoard(self):
@@ -50,11 +57,16 @@ class Board:
         
         for row in range(1, 9):
             for col in range(1, 9):
+                sqObj = s.Square()
                 if isinstance(self.board[row][col], str):
                     if (row + col) % 2 != 0:
-                        self.board[row][col] = "B"
+                        sqObj.setLoc(self.rows[row], col)
+                        sqObj.setType('B')
+                        self.board[row][col] = sqObj
                     else:
-                        self.board[row][col] = "R"
+                        sqObj.setLoc(self.rows[row], col)
+                        sqObj.setType('R')
+                        self.board[row][col] = sqObj
     
     def deletePC(self, piece):
         pieceLoc = piece.getLoc()
@@ -97,50 +109,48 @@ class Board:
             positions = [[row+2, col+2], [row+2, col-2]]
             for p in positions:
                 if p[0] > 0 and p[0] < 9 and p[1] > 0 and p[1] < 9:
-                    if self.board[p[0]][p[1]] == "B":
+                    if self.board[p[0]][p[1]].getType() == "B":
                         rowAvg = int((row+p[0])/2)
                         colAvg = int((col+p[1])/2)
 
-                        if not isinstance(self.board[rowAvg][colAvg], str):
-                            oPiece = self.board[rowAvg][colAvg].getType()
-                            if oPiece == "o" or oPiece == "O":
-                                found = True
-                                break
+                        oPiece = self.board[rowAvg][colAvg].getType()
+                        if oPiece == "o" or oPiece == "O":
+                            found = True
+                            break
         elif pcType == "o":
             row = self.rows.index(pcLoc[0])
             col = pcLoc[1]
             positions = [[row-2, col+2], [row-2, col-2]]
             for p in positions:
                 if p[0] > 0 and p[0] < 9 and p[1] > 0 and p[1] < 9:
-                    if self.board[p[0]][p[1]] == "B":
+                    if self.board[p[0]][p[1]].getType() == "B":
                         rowAvg = int((row+p[0])/2)
                         colAvg = int((col+p[1])/2)
                
-                        if not isinstance(self.board[rowAvg][colAvg], str):
-                            oPiece = self.board[rowAvg][colAvg].getType()
-                            if oPiece == "x" or oPiece == "X":
-                                found = True
-                                break
+                        oPiece = self.board[rowAvg][colAvg].getType()
+                        if oPiece == "x" or oPiece == "X":
+                            found = True
+                            break
         elif pcType == "X" or pcType == "O":
             row = self.rows.index(pcLoc[0])
             col = pcLoc[1]
             positions = [[row-1, col-2], [row-2, col+2], [row+2, col-2], [row+2, col+2]]
             for p in positions:
                 if p[0] > 0 and p[0] < 9 and p[1] > 0 and p[1] < 9:
-                    if self.board[p[0]][p[1]] == "B":
+                    if self.board[p[0]][p[1]].getType() == "B":
                         rowAvg = int((row+p[0])/2)
                         colAvg = int((col+p[1])/2)
-                        if not isinstance(self.board[rowAvg][colAvg], str):
-                            if pcType == "X":
-                                oPiece = self.board[rowAvg][colAvg].getType()
-                                if oPiece == "o" or oPiece == "O":
-                                    found = True
-                                    break
-                            else:
-                                oPiece = self.board[rowAvg][colAvg].getType()
-                                if oPiece == "x" or oPiece == "X":
-                                    found = True
-                                    break
+    
+                        if pcType == "X":
+                            oPiece = self.board[rowAvg][colAvg].getType()
+                            if oPiece == "o" or oPiece == "O":
+                                found = True
+                                break
+                        else:
+                            oPiece = self.board[rowAvg][colAvg].getType()
+                            if oPiece == "x" or oPiece == "X":
+                                found = True
+                                break
         return found
 
 
@@ -162,25 +172,20 @@ class Board:
             colAvg = int((destination[1] + source[1])/2)
             
             if pieceType == "x":
-                if destination[0] > source[0] and self.board[self.rows.index(destination[0])][destination[1]] == "B":
+                if destination[0] > source[0] and self.board[self.rows.index(destination[0])][destination[1]].getType() == "B":
                     if rowDiff == 1 and colDiff == 1:
                         self.nextplayer = "o"
                         self.setPC2Des(piece, destination)
                         self.renderBoard()
                     elif rowDiff == 2 and colDiff == 2:
-                        if not isinstance(self.board[rowAvg][colAvg], str):
-                            oPiece = self.board[rowAvg][colAvg]
-
-                            if oPiece.getType() == "o" or oPiece.getType() == "O":
-                                if self.checkJump(piece):
-                                    self.nextplayer = "x"
-                                else:
-                                    self.nextplayer = "o"
-                                self.setPC2Des(piece, destination)
-                                self.deletePC(oPiece)
-                            else:
-                                self.wrongMove(source, destination)
+                        oPiece = self.board[rowAvg][colAvg]
+                        if oPiece.getType() == "o" or oPiece.getType() == "O":
+                            if self.checkJump(piece):
                                 self.nextplayer = "x"
+                            else:
+                                self.nextplayer = "o"
+                            self.setPC2Des(piece, destination)
+                            self.deletePC(oPiece)
                         else:
                             self.wrongMove(source, destination)
                             self.nextplayer = "x"
@@ -196,18 +201,14 @@ class Board:
                     self.setPC2Des(piece, destination)
                     self.renderBoard()
                 elif rowDiff == 2 and colDiff == 2:
-                    if not isinstance(self.board[rowAvg][colAvg], str):
-                        oPiece = self.board[rowAvg][colAvg]
-                        if oPiece.getType() == "o" or oPiece.getType() == "O":
-                            if self.checkJump(piece):
-                                self.nextplayer = "x"
-                            else:
-                                self.nextplayer = "o"
-                            self.setPC2Des(piece, destination)
-                            self.deletePC(oPiece)  
-                        else:
-                            self.wrongMove(source, destination)
+                    oPiece = self.board[rowAvg][colAvg]
+                    if oPiece.getType() == "o" or oPiece.getType() == "O":
+                        if self.checkJump(piece):
                             self.nextplayer = "x"
+                        else:
+                            self.nextplayer = "o"
+                        self.setPC2Des(piece, destination)
+                        self.deletePC(oPiece)  
                     else:
                         self.wrongMove(source, destination)
                         self.nextplayer = "x"
@@ -220,7 +221,27 @@ class Board:
                     self.setPC2Des(piece, destination)
                     self.renderBoard()
                 elif rowDiff == 2 and colDiff == 2:
-                    if not isinstance(self.board[rowAvg][colAvg], str):
+                    oPiece = self.board[rowAvg][colAvg]
+                    if oPiece.getType() == "x" or oPiece.getType() == "X":
+                        if self.checkJump(piece):
+                            self.nextplayer = "o"
+                        else:
+                            self.nextplayer = "x"
+                        self.setPC2Des(piece, destination)
+                        self.deletePC(oPiece)
+                    else:
+                        self.wrongMove(source, destination)
+                        self.nextplayer = "o"
+                else:
+                    self.wrongMove(source, destination)
+                    self.nextplayer = "o"
+            elif pieceType == "o":
+                if destination[0] < source[0] and self.board[self.rows.index(destination[0])][destination[1]].getType() == "B":
+                    if rowDiff == 1 and colDiff == 1:
+                        self.nextplayer = "x"
+                        self.setPC2Des(piece, destination)
+                        self.renderBoard()
+                    elif rowDiff == 2 and colDiff == 2:
                         oPiece = self.board[rowAvg][colAvg]
                         if oPiece.getType() == "x" or oPiece.getType() == "X":
                             if self.checkJump(piece):
@@ -229,34 +250,6 @@ class Board:
                                 self.nextplayer = "x"
                             self.setPC2Des(piece, destination)
                             self.deletePC(oPiece)
-                        else:
-                            self.wrongMove(source, destination)
-                            self.nextplayer = "o"
-                    else:
-                        self.wrongMove(source, destination)
-                        self.nextplayer = "o"
-                else:
-                    self.wrongMove(source, destination)
-                    self.nextplayer = "o"
-            elif pieceType == "o":
-                if destination[0] < source[0] and self.board[self.rows.index(destination[0])][destination[1]] == "B":
-                    if rowDiff == 1 and colDiff == 1:
-                        self.nextplayer = "x"
-                        self.setPC2Des(piece, destination)
-                        self.renderBoard()
-                    elif rowDiff == 2 and colDiff == 2:
-                        if not isinstance(self.board[rowAvg][colAvg], str):
-                            oPiece = self.board[rowAvg][colAvg]
-                            if oPiece.getType() == "x" or oPiece.getType() == "X":
-                                if self.checkJump(piece):
-                                    self.nextplayer = "o"
-                                else:
-                                    self.nextplayer = "x"
-                                self.setPC2Des(piece, destination)
-                                self.deletePC(oPiece)
-                            else:
-                                self.wrongMove(source, destination)
-                                self.nextplayer = "o"
                         else:
                             self.wrongMove(source, destination)
                             self.nextplayer = "o"
@@ -315,7 +308,7 @@ class Board:
                 pos = [[row+1, col-1], [row+1, col+1]]
                 for p in pos:
                     if p[0] > 0 and p[0] < 9 and p[1] > 0 and p[1] < 9:
-                        if self.board[p[0]][p[1]] == "B":
+                        if self.board[p[0]][p[1]].getType() == "B":
                             xMove = True
 
                 xCount += 1
@@ -326,7 +319,7 @@ class Board:
                 pos = [[row-1, col-1], [row-1, col+1]]
                 for p in pos:
                     if p[0] > 0 and p[0] < 9 and p[1] > 0 and p[1] < 9:
-                        if self.board[p[0]][p[1]] == "B":
+                        if self.board[p[0]][p[1]].getType() == "B":
                             oMove = True
 
                 oCount += 1
@@ -334,7 +327,7 @@ class Board:
                 pos = [[row-1, col-2], [row-2, col+2], [row+2, col-2], [row+2, col+2]]
                 for p in pos:
                     if p[0] > 0 and p[0] < 9 and p[1] > 0 and p[1] < 9:
-                        if self.board[p[0]][p[1]] == "B":
+                        if self.board[p[0]][p[1]].getType() == "B":
                             if piece.getType() == "X":
                                 xMove = True
                             else:
