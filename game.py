@@ -10,10 +10,15 @@ class Game:
         self.moves = []
     
     def gameMenu(self):
-        print("---GAME MENU---")
-        print("Press: ")
-        print("1: Resume Game")
-        print("2: EXIT")
+        while(True):
+            decision = input("Begin game play? (Y/N): ")
+            if decision.lower() == 'y':
+                self.runGame()
+                return
+            elif decision.lower() == 'n':
+                return
+            else:
+                print("Invalid entry!")
 
     def fileHeader(self):
         return self.player1Name + "_" + self.player2Name + ".txt"
@@ -48,14 +53,6 @@ class Game:
             f.write(line + '\n')
         f.write("*********************************************************" + '\n')
         f.close()
-         
-    def getSavedMoves(self):
-        txt_file = open("moves.txt", "r")
-        file_content = txt_file.readlines()
-        for line in file_content:
-            line.replace("\n", "")
-            self.moves.append(line)
-        txt_file.close()
     
     def validateMoveInput(self, inpt):
         while(True): 
@@ -78,9 +75,7 @@ class Game:
             
     def runGame(self):
         boardObj = b.Board()
-        i=0
         boardObj.printBoard()
-        # self.getSavedMoves()
         while(True):
             if self.player == "x":
                 promptMsg = "{}({}) Please Enter Your Move: ".format(self.player1Name, self.player)
@@ -88,7 +83,6 @@ class Game:
                 promptMsg = "{}({}) Please Enter Your Move: ".format(self.player2Name, self.player)
 
             moveStrs = self.validateMoveInput(input(promptMsg).strip())
-            # moveStrs = self.validateMoveInput(self.moves[i])
             
             self.player = boardObj.checkMove(self.player, moveStrs)
             self.fileBoard(moveStrs, boardObj)
@@ -101,9 +95,3 @@ class Game:
                 else:
                     print("{} won the game!".format(self.player2Name))
                 break
-            if i>1:
-                break
-            i += 1
-            # i += 1
-            # if i > len(self.moves)-1:
-            #     break

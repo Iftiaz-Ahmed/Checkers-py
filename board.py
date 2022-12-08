@@ -176,7 +176,7 @@ class Board:
         startSource =  start[0].split("-")
         startDes = start[1].split("-")
 
-        if self.board[self.rows.index(startSource[0])][int(startSource[1])].getType() != player:
+        if self.board[self.rows.index(startSource[0])][int(startSource[1])].getType().lower() != player:
             valid = False
 
         if valid:
@@ -192,7 +192,7 @@ class Board:
                         rowAvg = int((self.rows.index(destination[0]) + self.rows.index(source[0]))/2)
                         colAvg = int((int(destination[1]) + int(source[1]))/2)
                         oppPlayer = "o" if player == "x" else "x"
-                        if self.board[rowAvg][colAvg].getType() == oppPlayer and int(source[1]) != colAvg:
+                        if self.board[rowAvg][colAvg].getType().lower() == oppPlayer and int(source[1]) != colAvg:
                             if not valid:
                                 valid = False
                         else:
