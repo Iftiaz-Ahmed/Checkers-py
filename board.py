@@ -162,15 +162,56 @@ class Board:
 
         oPiece = self.board[rowAvg][colAvg]
         if oPiece.getType() == oppPlayer or oPiece.getType() == oppPlayer.upper():
-            if self.checkJump(piece):
-                self.nextplayer = player
-            else:
-                self.nextplayer = oppPlayer
+            self.nextplayer = oppPlayer
             self.setPC2Des(piece, destination)
             self.removePC(oPiece)
         else:
             self.wrongMove(source, destination)
             self.nextplayer = player
+    
+    def checkMove(self, player, moves):
+        valid = True
+        
+        start = moves[0].split(",")
+        startSource =  start[0].split("-")
+        startDes = start[1].split("-")
+
+        if self.board[self.rows.index(startSource[0])][int(startSource[1])].getType() != player:
+            valid = False
+
+        if valid:
+            if len(moves) == 1:
+                if self.board[self.rows.index(startDes[0])][int(startDes[1])].getType() != "B":
+                    valid = False
+            else:
+                for move in moves:
+                    positions = move.split(",")
+                    source = positions[0].split("-")
+                    destination = positions[1].split("-")
+                    if self.board[self.rows.index(destination[0])][int(destination[1])].getType() == "B":
+                        rowAvg = int((self.rows.index(destination[0]) + self.rows.index(source[0]))/2)
+                        colAvg = int((int(destination[1]) + int(source[1]))/2)
+                        oppPlayer = "o" if player == "x" else "x"
+                        if self.board[rowAvg][colAvg].getType() == oppPlayer and int(source[1]) != colAvg:
+                            if not valid:
+                                valid = False
+                        else:
+                            valid = False
+                    else:
+                        valid = False
+
+        if valid:
+            for move in moves:
+                positions = move.split(",")
+                source = positions[0].split("-")
+                destination = positions[1].split("-")
+                self.nextplayer = self.movePC(player, source, destination)        
+        else:
+            print("Not a valid move. Try again!")
+            self.nextplayer = player
+        
+        return self.nextplayer
+            
 
     def movePC(self, player, source, destination):
         try:
