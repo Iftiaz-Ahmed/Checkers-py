@@ -68,7 +68,7 @@ class Board:
                         sqObj.setType('R')
                         self.board[row][col] = sqObj
     
-    def deletePC(self, piece):
+    def removePC(self, piece):
         pieceLoc = piece.getLoc()
         print("\n{} deleted from {}{}!\n".format(piece.getType(), pieceLoc[0], pieceLoc[1]))
         pieceIdx = self.activePieces.index(piece)
@@ -167,7 +167,7 @@ class Board:
             else:
                 self.nextplayer = oppPlayer
             self.setPC2Des(piece, destination)
-            self.deletePC(oPiece)
+            self.removePC(oPiece)
         else:
             self.wrongMove(source, destination)
             self.nextplayer = player
