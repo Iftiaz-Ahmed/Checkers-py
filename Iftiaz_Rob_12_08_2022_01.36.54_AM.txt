@@ -1,0 +1,36 @@
+GAME START
+  12345678
+----------------
+A-RxRxRxRx
+B-xRxRxRxR
+C-RBRxRxRx
+D-BRxRBRBR
+E-RBRBRBRB
+F-oRoRoRoR
+G-RoRoRoRo
+H-oRoRoRoR
+*********************************************************
+Player 1: Iftiaz Move C2 to D3
+  12345678
+----------------
+A-RxRxRxRx
+B-xRxRxRxR
+C-RBRxRxRx
+D-BRxRBRBR
+E-RBRBRBRB
+F-oRoRoRoR
+G-RoRoRoRo
+H-oRoRoRoR
+*********************************************************
+Player 2: Rob Move F5 to E4
+  12345678
+----------------
+A-RxRxRxRx
+B-xRxRxRxR
+C-RBRxRxRx
+D-BRxRBRBR
+E-RBRoRBRB
+F-oRoRBRoR
+G-RoRoRoRo
+H-oRoRoRoR
+*********************************************************

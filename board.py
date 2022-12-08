@@ -301,6 +301,24 @@ class Board:
         for piece in self.activePieces:
             print("{}: {}".format(piece.getType(), piece.getLoc()))
     
+    def getFileBoard(self):
+        board = []
+        for row in range(9):
+            string = ""
+            for col in range(9):
+                if row == 0:
+                    if col == 0:
+                        string += " "
+                    string += str(self.board[row][col])
+                elif isinstance(self.board[row][col], str):
+                    string += self.board[row][col]
+                    string += "-"    
+                else:
+                    string += self.board[row][col].getType()
+            board.append(string)
+        board.insert(1, "----------------")
+        return board
+    
     def isGameOver(self):
         xCount = 0
         oCount = 0
