@@ -153,6 +153,24 @@ class Board:
                                 break
         return found
 
+    def jump(self, player, piece, source, destination):
+        source[1] = int(source[1])
+        destination[1] = int(destination[1])
+        rowAvg = int((self.rows.index(destination[0]) + self.rows.index(source[0]))/2)
+        colAvg = int((destination[1] + source[1])/2)
+        oppPlayer = "o" if player == "x" else "x"
+
+        oPiece = self.board[rowAvg][colAvg]
+        if oPiece.getType() == oppPlayer or oPiece.getType() == oppPlayer.upper():
+            if self.checkJump(piece):
+                self.nextplayer = player
+            else:
+                self.nextplayer = oppPlayer
+            self.setPC2Des(piece, destination)
+            self.deletePC(oPiece)
+        else:
+            self.wrongMove(source, destination)
+            self.nextplayer = player
 
     def movePC(self, player, source, destination):
         try:
@@ -167,9 +185,7 @@ class Board:
                 return
             
             rowDiff = abs(self.rows.index(destination[0]) - self.rows.index(source[0]))
-            rowAvg = int((self.rows.index(destination[0]) + self.rows.index(source[0]))/2)
             colDiff = abs(destination[1] - source[1])
-            colAvg = int((destination[1] + source[1])/2)
             
             if pieceType == "x":
                 if destination[0] > source[0] and self.board[self.rows.index(destination[0])][destination[1]].getType() == "B":
@@ -178,17 +194,7 @@ class Board:
                         self.setPC2Des(piece, destination)
                         self.renderBoard()
                     elif rowDiff == 2 and colDiff == 2:
-                        oPiece = self.board[rowAvg][colAvg]
-                        if oPiece.getType() == "o" or oPiece.getType() == "O":
-                            if self.checkJump(piece):
-                                self.nextplayer = "x"
-                            else:
-                                self.nextplayer = "o"
-                            self.setPC2Des(piece, destination)
-                            self.deletePC(oPiece)
-                        else:
-                            self.wrongMove(source, destination)
-                            self.nextplayer = "x"
+                        self.jump(player, piece, source, destination)
                     else:
                         self.wrongMove(source, destination)
                         self.nextplayer = "x"
@@ -201,17 +207,7 @@ class Board:
                     self.setPC2Des(piece, destination)
                     self.renderBoard()
                 elif rowDiff == 2 and colDiff == 2:
-                    oPiece = self.board[rowAvg][colAvg]
-                    if oPiece.getType() == "o" or oPiece.getType() == "O":
-                        if self.checkJump(piece):
-                            self.nextplayer = "x"
-                        else:
-                            self.nextplayer = "o"
-                        self.setPC2Des(piece, destination)
-                        self.deletePC(oPiece)  
-                    else:
-                        self.wrongMove(source, destination)
-                        self.nextplayer = "x"
+                    self.jump(player, piece, source, destination)
                 else:
                     self.wrongMove(source, destination)
                     self.nextplayer = "x"
@@ -221,17 +217,7 @@ class Board:
                     self.setPC2Des(piece, destination)
                     self.renderBoard()
                 elif rowDiff == 2 and colDiff == 2:
-                    oPiece = self.board[rowAvg][colAvg]
-                    if oPiece.getType() == "x" or oPiece.getType() == "X":
-                        if self.checkJump(piece):
-                            self.nextplayer = "o"
-                        else:
-                            self.nextplayer = "x"
-                        self.setPC2Des(piece, destination)
-                        self.deletePC(oPiece)
-                    else:
-                        self.wrongMove(source, destination)
-                        self.nextplayer = "o"
+                    self.jump(player, piece, source, destination)
                 else:
                     self.wrongMove(source, destination)
                     self.nextplayer = "o"
@@ -242,17 +228,7 @@ class Board:
                         self.setPC2Des(piece, destination)
                         self.renderBoard()
                     elif rowDiff == 2 and colDiff == 2:
-                        oPiece = self.board[rowAvg][colAvg]
-                        if oPiece.getType() == "x" or oPiece.getType() == "X":
-                            if self.checkJump(piece):
-                                self.nextplayer = "o"
-                            else:
-                                self.nextplayer = "x"
-                            self.setPC2Des(piece, destination)
-                            self.deletePC(oPiece)
-                        else:
-                            self.wrongMove(source, destination)
-                            self.nextplayer = "o"
+                        self.jump(player, piece, source, destination)
                     else:
                         self.wrongMove(source, destination)
                         self.nextplayer = "o"
