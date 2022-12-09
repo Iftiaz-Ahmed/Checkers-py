@@ -1,3 +1,13 @@
+'''
+Final Program - Checkers Game
+Iftiaz Ahmed Alfi
+ID: 00768112
+
+This module gives the template for the pieces in the game. It sets the location and type of the pieces and returns the location and type of pieces when the get functions are called. 
+
+python 3.10.6
+'''
+
 class Piece:
     def __init__(self):
         self.locRow = ""
