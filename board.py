@@ -3,6 +3,8 @@ Final Program - Checkers Game
 Iftiaz Ahmed Alfi
 ID: 00768112
 
+This module has the Board class. It intializes a 8x8 2D board. It keeps track of the current player turn. It check whether the player move is valid and according to that a piece is moved or jumped, and the opposition player is also removed if a piece is jumped over it. It renders the board after each move and displays the latest board to the players. 
+
 python 3.10.6
 '''
 
